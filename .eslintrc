@@ -8,7 +8,7 @@
     "env": {
         "browser": true,
         "es6": true,
-        "node": true
+        "node": false
     },
 
     "globals": {
@@ -31,8 +31,8 @@
     "rules": {
         "quotes": [1, "single"],
         "strict": [2, "global"],
-        "require-jsdoc": [1],
-        "valid-jsdoc": [2],
+        "require-jsdoc": [0],
+        "valid-jsdoc": [0],
         "brace-style": [2, "1tbs", { "allowSingleLine": false }],
         "camelcase": [2, { "properties": "always" }],
         "block-spacing": [2, "always"],

@@ -3,14 +3,14 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var path = require('path');
 var env = require('yargs').argv.mode;
 
-var libraryName = 'prk-concertina';
+var libraryName = 'Concertina';
 
 var plugins = [], outputFile;
 
 if (env === 'build') {
     plugins.push (new UglifyJsPlugin({
         'minimize': true,
-        'include': /\.min.js$/ 
+        'include': /\.min.js$/
     }));
     outputFile = libraryName + '.min.js';
 } else {
@@ -25,6 +25,7 @@ var config = {
     'devtool': 'source-map',
     'output': {
         'path': __dirname + '/dist',
+        'publicPath': '/dist/',
         'filename': '[name].js',
         'library': libraryName,
         'libraryTarget': 'umd',
