@@ -11,13 +11,13 @@
 
         <section class="Concertina" role="tabpanel">
             <article class="Concertina-item">
-                <a class="Concertina-tab" href="#item1" role="tab">Item 1</a>
+                <a href="#item1" class="Concertina-tab" role="tab">Item 1</a>
                 <div class="Concertina-panel" id="item1" role="tabpanel">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati laborum, eos nihil nemo sit vitae ipsam quia dignissimos esse ea est dolore sapiente, maxime delectus temporibus quod explicabo velit eveniet harum nam quisquam voluptatibus, illo optio quos? Reprehenderit non rerum, tempore, voluptate, dolore dolor consectetur eum optio voluptatum a libero, laudantium eveniet accusamus illo eius excepturi. Magnam repudiandae ab, sint nisi iure reprehenderit deserunt dolore tempora harum aperiam vitae quaerat libero sunt qui consequatur, nostrum corporis ducimus pariatur minus doloremque ut! Quis nihil, doloribus. Tempore earum accusamus non minus modi.
                 </div>
             </article>
             <article class="Concertina-item">
-                <a class="Concertina-tab" href="#item2" role="tab">Item 2</a>
+                <a href="#item2" class="Concertina-tab" role="tab">Item 2</a>
                 <div class="Concertina-panel" id="item2" role="tabpanel">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati laborum, eos nihil nemo sit vitae ipsam quia dignissimos esse ea est dolore sapiente, maxime delectus temporibus quod explicabo velit eveniet harum nam quisquam voluptatibus, illo optio quos? Reprehenderit non rerum, tempore, voluptate, dolore dolor consectetur eum optio voluptatum a libero, laudantium eveniet accusamus illo eius excepturi. Magnam repudiandae ab, sint nisi iure reprehenderit deserunt dolore tempora harum aperiam vitae quaerat libero sunt qui consequatur, nostrum corporis ducimus pariatur minus doloremque ut! Quis nihil, doloribus. Tempore earum accusamus non minus modi.
                 </div>
@@ -26,9 +26,24 @@
 
         <script src="../dist/prk-concertina.js"></script>
         <script>
-            var test = new Concertina(document.querySelector('.Concertina'));
+            var test = new Concertina(document.querySelector('.Concertina'), {
+                'tabActiveClass': '.is-selected2',
+                'panelActiveClass': '.is-visible2',
+                'lorem': 'ipsum'
+            });
 
             test.init();
         </script>
     </body>
 </html>
+
+<style>
+    .is-selected2 {
+        background-color: #F55;
+    }
+
+    .is-visible2 {
+        background-color: #55F;
+    }
+
+</style>

@@ -1,84 +1,73 @@
-// Private Methods
-function extendConfig(defaults, options) {
-    let prop, extended = {};
-
-    for (prop in defaults) {
-        if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
-            extended[prop] = defaults[prop];
-        }
-    }
-
-    for (prop in options) {
-        if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
-            extended[prop] = options[prop];
-        }
-    }
-
-    return extended;
-};
-
 export default class Concertina {
-    constructor(el, options) {
+    constructor(el, customOptions) {
         // Config
         this.element = el; // TODO: Get this to work with multiple elements - document.querySelectorAll('blah');
-        this.defaults = {
+        this.options = {
             'blockClass': '.Concertina',
             'tabClass': '.Concertina-tab',
             'tabActiveClass': '.is-selected',
             'panelClass': '.Concertina-panel',
             'panelActiveClass': '.is-visible'
         };
-        this.options = extendConfig.bind(this)(this.defaults, options);
-        this.tabs = this.element.querySelectorAll(this.options.tabClass);
-        this.panels = this.element.querySelectorAll(this.options.panelClass);
+
+        for (let prop in customOptions) {
+            this.options[prop] = customOptions[prop];
+        }
+
+        this.tabs = [...this.element.querySelectorAll(this.options.tabClass)];
+        this.panels = [...this.element.querySelectorAll(this.options.panelClass)];
     }
 
     init() {
         //TODO: Set aria-controls attr on tabs and aria-labelledby attr on panels.
+
         this.setTabsInactive();
         this.setPanelsInactive();
 
         this.element.addEventListener('click', (e) => {
-            if (e.target.classList.contains(this.options.tabClass.replace('.', ''))){
+            if (this.tabs.includes(e.target)){
                 e.preventDefault();
-
-                this.setTabsInactive();
-                this.setPanelsInactive();
                 this.setTabState(e.target);
-                this.setPanelState(e.target.getAttribute('href').replace('#', ''));
+                this.setPanelState(e.target.getAttribute('href'));
             }
         });
-    }
-
-    // Disable all tabs.
-    setTabsInactive() {
-        for (let i = 0; i < this.tabs.length; i += 1) {
-            this.tabs[i].setAttribute('aria-selected', 'false');
-            this.tabs[i].classList.remove(this.options.tabActiveClass.replace('.', ''));
-        }
     }
 
     // Set state on a single tab.
     setTabState(el) {
         this.setTabsInactive();
-
-        el.setAttribute('aria-selected', 'true');
-        el.classList.add(this.options.tabActiveClass.replace('.', ''));
-    }
-
-    // Disable all panels.
-    setPanelsInactive() {
-        for (let i = 0; i < this.panels.length; i += 1) {
-            this.panels[i].setAttribute('aria-hidden', 'true');
-            this.panels[i].classList.remove(this.options.panelActiveClass.replace('.', ''));
-        }
+        this.toggleState(el, true);
     }
 
     // Set state on a single panel.
     setPanelState(id) {
-        let el = document.getElementById(id);
+        id = id.replace('#', '');
+        let el = this.panels.find(elem => elem.id == id);
+        this.setPanelsInactive();
+        this.toggleState(el, true);
+    }
 
-        el.setAttribute('aria-hidden', 'false');
-        el.classList.add(this.options.panelActiveClass.replace('.', ''));
+    // Disable all tabs.
+    setTabsInactive() {
+        this.tabs.map(elem => this.toggleState(elem, false));
+    }
+
+    // Disable all panels.
+    setPanelsInactive() {
+        this.panels.map(elem => this.toggleState(elem, false));
+    }
+
+    // Toggle the active state.
+    toggleState(el, state) {
+        let className = '';
+        if (this.tabs.includes(el)) {
+            el.setAttribute('aria-selected', state);
+            className = this.options.tabActiveClass.replace('.', '');
+        }
+        if (this.panels.includes(el)) {
+            el.setAttribute('aria-hidden', !state);
+            className = this.options.panelActiveClass.replace('.', '');
+        }
+        state ? el.classList.add(className) : el.classList.remove(className);
     }
 }
