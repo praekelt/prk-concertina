@@ -1,6 +1,6 @@
 {
   "name": "prk-concertina",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Accordion UI pattern.",
   "main": "src/main.js",
   "scripts": {
