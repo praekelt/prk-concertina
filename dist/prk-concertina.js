@@ -62,44 +62,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	// Private Methods
-	function extendConfig(defaults, options) {
-	    var prop = void 0,
-	        extended = {};
-	
-	    for (prop in defaults) {
-	        if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
-	            extended[prop] = defaults[prop];
-	        }
-	    }
-	
-	    for (prop in options) {
-	        if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
-	            extended[prop] = options[prop];
-	        }
-	    }
-	
-	    return extended;
-	};
-	
 	var Concertina = function () {
-	    function Concertina(el, options) {
+	    function Concertina(el, customOptions) {
 	        _classCallCheck(this, Concertina);
 	
 	        // Config
 	        this.element = el; // TODO: Get this to work with multiple elements - document.querySelectorAll('blah');
-	        this.defaults = {
+	        this.options = {
 	            'blockClass': '.Concertina',
 	            'tabClass': '.Concertina-tab',
 	            'tabActiveClass': '.is-selected',
 	            'panelClass': '.Concertina-panel',
 	            'panelActiveClass': '.is-visible'
 	        };
-	        this.options = extendConfig.bind(this)(this.defaults, options);
-	        this.tabs = this.element.querySelectorAll(this.options.tabClass);
-	        this.panels = this.element.querySelectorAll(this.options.panelClass);
+	
+	        for (var prop in customOptions) {
+	            this.options[prop] = customOptions[prop];
+	        }
+	
+	        this.tabs = [].concat(_toConsumableArray(this.element.querySelectorAll(this.options.tabClass)));
+	        this.panels = [].concat(_toConsumableArray(this.element.querySelectorAll(this.options.panelClass)));
 	    }
 	
 	    _createClass(Concertina, [{
@@ -108,30 +94,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var _this = this;
 	
 	            //TODO: Set aria-controls attr on tabs and aria-labelledby attr on panels.
+	
 	            this.setTabsInactive();
 	            this.setPanelsInactive();
 	
 	            this.element.addEventListener('click', function (e) {
-	                if (e.target.classList.contains(_this.options.tabClass.replace('.', ''))) {
+	                if (_this.tabs.includes(e.target)) {
 	                    e.preventDefault();
-	
-	                    _this.setTabsInactive();
-	                    _this.setPanelsInactive();
 	                    _this.setTabState(e.target);
-	                    _this.setPanelState(e.target.getAttribute('href').replace('#', ''));
+	                    _this.setPanelState(e.target.getAttribute('href'));
 	                }
 	            });
-	        }
-	
-	        // Disable all tabs.
-	
-	    }, {
-	        key: 'setTabsInactive',
-	        value: function setTabsInactive() {
-	            for (var i = 0; i < this.tabs.length; i += 1) {
-	                this.tabs[i].setAttribute('aria-selected', 'false');
-	                this.tabs[i].classList.remove(this.options.tabActiveClass.replace('.', ''));
-	            }
 	        }
 	
 	        // Set state on a single tab.
@@ -140,20 +113,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'setTabState',
 	        value: function setTabState(el) {
 	            this.setTabsInactive();
-	
-	            el.setAttribute('aria-selected', 'true');
-	            el.classList.add(this.options.tabActiveClass.replace('.', ''));
-	        }
-	
-	        // Disable all panels.
-	
-	    }, {
-	        key: 'setPanelsInactive',
-	        value: function setPanelsInactive() {
-	            for (var i = 0; i < this.panels.length; i += 1) {
-	                this.panels[i].setAttribute('aria-hidden', 'true');
-	                this.panels[i].classList.remove(this.options.panelActiveClass.replace('.', ''));
-	            }
+	            this.toggleState(el, true);
 	        }
 	
 	        // Set state on a single panel.
@@ -161,10 +121,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'setPanelState',
 	        value: function setPanelState(id) {
-	            var el = document.getElementById(id);
+	            id = id.replace('#', '');
+	            var el = this.panels.find(function (elem) {
+	                return elem.id == id;
+	            });
+	            this.setPanelsInactive();
+	            this.toggleState(el, true);
+	        }
 	
-	            el.setAttribute('aria-hidden', 'false');
-	            el.classList.add(this.options.panelActiveClass.replace('.', ''));
+	        // Disable all tabs.
+	
+	    }, {
+	        key: 'setTabsInactive',
+	        value: function setTabsInactive() {
+	            var _this2 = this;
+	
+	            this.tabs.map(function (elem) {
+	                return _this2.toggleState(elem, false);
+	            });
+	        }
+	
+	        // Disable all panels.
+	
+	    }, {
+	        key: 'setPanelsInactive',
+	        value: function setPanelsInactive() {
+	            var _this3 = this;
+	
+	            this.panels.map(function (elem) {
+	                return _this3.toggleState(elem, false);
+	            });
+	        }
+	
+	        // Toggle the active state.
+	
+	    }, {
+	        key: 'toggleState',
+	        value: function toggleState(el, state) {
+	            var className = '';
+	            if (this.tabs.includes(el)) {
+	                el.setAttribute('aria-selected', state);
+	                className = this.options.tabActiveClass.replace('.', '');
+	            }
+	            if (this.panels.includes(el)) {
+	                el.setAttribute('aria-hidden', !state);
+	                className = this.options.panelActiveClass.replace('.', '');
+	            }
+	            state ? el.classList.add(className) : el.classList.remove(className);
 	        }
 	    }]);
 	

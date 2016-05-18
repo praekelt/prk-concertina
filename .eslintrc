@@ -1,8 +1,12 @@
 {
-    "ecmaFeatures": {
-        "globalReturn": true,
-        "jsx": true,
-        "modules": true
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "globalReturn": true,
+            "jsx": true,
+            "modules": true,
+        }
     },
 
     "env": {
