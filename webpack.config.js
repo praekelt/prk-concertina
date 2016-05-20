@@ -42,6 +42,16 @@ var config = {
                 'test': /\.j[s|sx]$/,
                 'loader': 'eslint',
                 'exclude': /node_modules/
+            },
+            {
+                'test': /\.s[a|c]ss$/,
+                'loaders': [
+                    'file',
+                    'extract',
+                    'css',
+                    'sass'
+                ],
+                'exclude': /node_modules/
             }
         ]
     },
