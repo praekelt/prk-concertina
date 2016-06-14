@@ -44,7 +44,7 @@ export default class Concertina {
     // Set state on a single panel.
     setPanelState(id) {
         id = id.replace('#', '');
-        let el = this.panels.find(elem => elem.id == id);
+        let el = this.panels.find(elem => elem.id === id);
         this.setPanelsInactive();
         this.toggleState(el, true);
     }

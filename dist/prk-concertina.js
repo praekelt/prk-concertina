@@ -125,7 +125,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function setPanelState(id) {
 	            id = id.replace('#', '');
 	            var el = this.panels.find(function (elem) {
-	                return elem.id == id;
+	                return elem.id === id;
 	            });
 	            this.setPanelsInactive();
 	            this.toggleState(el, true);

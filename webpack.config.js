@@ -37,11 +37,6 @@ var config = {
                 'test': /\.j[s|sx]$/,
                 'loader': 'eslint',
                 'exclude': excludes
-            },
-            {
-                'test': /\.s[a|c]ss$/,
-                'loader': 'sasslint',
-                'exclude': excludes
             }
         ],
         'loaders': [
@@ -79,7 +74,12 @@ var config = {
     'sassLoader': {
         'precision': 3,
         'indentWidth': 4
-    }
+    },
+    'postcss': function() {
+        return [Autoprefixer({
+            'browsers': ['> 1%', 'IE 7', 'IE 8', 'IE 9']
+        }), CssNano];
+    },
 }
 
 module.exports = config;
