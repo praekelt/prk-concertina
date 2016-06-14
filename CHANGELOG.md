@@ -1,5 +1,9 @@
 # Concertina.js Change Log
 
+## [1.1.0]
+- Redid webpack to handle styles, and be a bit cleaner overall.
+- Added basic default styles.
+
 ## [1.0.2]
 - Added webpack-dev-server for development.
 - Cleaned up demo files a bit.

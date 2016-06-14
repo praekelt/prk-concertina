@@ -1,15 +1,32 @@
 var webpack = require('webpack');
 var path = require('path');
 var env = require('yargs').argv.mode;
+var excludes = /(node_modules|bower_components)/;
 
-var SassLintPlugin = require('sasslint-webpack-plugin'),
+// Dependencies
+var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
+    SassLintPlugin = require('sasslint-webpack-plugin'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
     Autoprefixer = require('autoprefixer'),
     CssNano = require('cssnano'),
-    CleanWebpackPlugin = require('clean-webpack-plugin');
+    CleanWebpackPlugin = require('clean-webpack-plugin'),
+    UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 
-var excludes = /(node_modules|bower_components)/;
+// Plugins
+var extractSCSS = new ExtractTextPlugin('[name].css'),
+    sassLint = new SassLintPlugin({
+        'configFile': '.sass-lint.yml',
+        'context': './src/styles',
+        'failOnError': false,
+        'failOnWarning': false
+    }),
+    cleanWebpack = new CleanWebpackPlugin(['./dist/'], {
+        'root': __dirname,
+        'verbose': true,
+        'dry': false
+    });
 
+// Webpack Config Object
 var config = {
     'entry': {
         'prk-concertina': __dirname + '/src/main.js'
@@ -52,24 +69,15 @@ var config = {
             },
             {
                 'test': /\.s[a|c]ss$/,
-                'loader': ExtractTextPlugin.extract('style-loader', 'css!postcss!sass'),
+                'loader': extractSCSS.extract('style-loader', 'css!postcss!sass'),
                 'exclude': excludes
             }
         ]
     },
     'plugins': [
-        new CleanWebpackPlugin(['./dist/'], {
-            'root': __dirname,
-            'verbose': true,
-            'dry': false
-        }),
-        new SassLintPlugin({
-            'configFile': '.sass-lint.yml',
-            'context': './src/styles',
-            'failOnError': false,
-            'failOnWarning': false
-        }),
-        new ExtractTextPlugin('[name].css')
+        cleanWebpack,
+        sassLint,
+        extractSCSS
     ],
     'sassLoader': {
         'precision': 3,
@@ -78,7 +86,7 @@ var config = {
     'postcss': function() {
         return [Autoprefixer({
             'browsers': ['> 1%', 'IE 7', 'IE 8', 'IE 9']
-        }), CssNano];
+        })];
     },
 }
 

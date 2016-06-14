@@ -47,7 +47,7 @@ rules:
     class-name-format:
       - 1
       -
-          convention: /^(?:u|is|has)\-[a-z][a-zA-Z0-9]*$|^(?!u|is|has)[a-zA-Z][a-zA-Z0-9]*(?:\-[a-z][a-zA-Z0-9]*)?(?:\-\-[a-z][a-zA-Z0-9]*)?$/
+          convention: ^(([A-Z][a-z]*)+$|(([A-Z][a-z]*)+|u|is|js)(-|--)([a-z]+([a-z]|[A-Z])*)+|(([A-Z][a-z]*)+|u|is|js)(-|--)([a-z]+([a-z]|[A-Z])*)+(--[a-z]+([a-z]|[A-Z])*)+)|[ng]-(\w)+(-(\w)*)*$
           convention-explanation: 'Classes must adhere to SUIT CSS naming convention. See: https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md'
     function-name-format: 1
     id-name-format: 0

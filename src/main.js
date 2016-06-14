@@ -1,4 +1,4 @@
-require('./styles/default/concertina.scss');
+require('./styles/default/prk-concertina.default.scss');
 
 export default class Concertina {
     constructor(el, customOptions) {
