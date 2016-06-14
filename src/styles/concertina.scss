@@ -1,7 +1,0 @@
-$prk-concertina: (
-    "test": true !default;
-);
-
-@if $prk-concertina.test {
-    @warn "TEST TRUE";
-}
