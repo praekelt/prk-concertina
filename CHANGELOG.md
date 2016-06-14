@@ -1,5 +1,9 @@
 # Concertina.js Change Log
 
+## [1.0.2]
+- Added webpack-dev-server for development.
+- Cleaned up demo files a bit.
+
 ## [1.0.1]
 - Refactored to use better ES6 conventions and syntax.
 

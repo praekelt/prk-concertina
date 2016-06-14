@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "build": "webpack --mode=build",
-    "dev": "webpack --progress --colors --watch --mode=dev",
+    "serve": "webpack-dev-server --content-base=demo/ --inline --mode=dev",
     "prepublish": "npm run build"
   },
   "repository": {
