@@ -1,3 +1,5 @@
+require('./styles/default/concertina.scss');
+
 export default class Concertina {
     constructor(el, customOptions) {
         // Config
