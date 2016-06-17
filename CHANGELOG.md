@@ -1,5 +1,8 @@
 # Concertina.js Change Log
 
+## [1.1.1]
+- Fixed issue with npm-shrinkwrap resolving the local-npm registry and breaking elsewhere.
+
 ## [1.1.0]
 - Redid webpack to handle styles, and be a bit cleaner overall.
 - Added basic default styles.
