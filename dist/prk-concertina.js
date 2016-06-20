@@ -114,8 +114,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'setTabState',
 	        value: function setTabState(el) {
-	            this.setTabsInactive();
-	            this.toggleState(el, true);
+	            if (!el.classList.contains(this.options.tabActiveClass.replace('.', ''))) {
+	                this.setTabsInactive();
+	                this.toggleState(el, true);
+	            } else {
+	                this.setTabsInactive();
+	            }
 	        }
 
 	        // Set state on a single panel.
@@ -127,8 +131,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var el = this.panels.find(function (elem) {
 	                return elem.id === id;
 	            });
-	            this.setPanelsInactive();
-	            this.toggleState(el, true);
+
+	            if (!el.classList.contains(this.options.panelActiveClass.replace('.', ''))) {
+	                this.setPanelsInactive();
+	                this.toggleState(el, true);
+	            } else {
+	                this.setPanelsInactive();
+	            }
 	        }
 
 	        // Disable all tabs.
