@@ -1,5 +1,8 @@
 # Concertina.js Change Log
 
+## [1.1.2]
+- Made tabs switchable
+
 ## [1.1.1]
 - Fixed issue with npm-shrinkwrap resolving the local-npm registry and breaking elsewhere.
 
