@@ -45,7 +45,6 @@
         "comma-spacing": ["error", { "before": false, "after": true }],
         "indent": ["error", 4],
         "no-ternary": [0],
-        "quote-props": ["error", "always"],
         "padded-blocks": ["error", "never"],
         "semi-spacing": ["error"],
         "space-infix-ops": ["error"],
