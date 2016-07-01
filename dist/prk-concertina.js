@@ -67,6 +67,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	__webpack_require__(1);
+	__webpack_require__(5);
+	__webpack_require__(6);
+	__webpack_require__(7);
+	__webpack_require__(8);
 
 	var Concertina = function () {
 	    function Concertina(el, customOptions) {
@@ -193,6 +197,166 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/**
+	 * @license MIT, GPL, do whatever you want
+	 * @requires polyfill: Array.prototype.slice fix {@link https://gist.github.com/brettz9/6093105}
+	 */
+
+	if (!Array.from) {
+	    Array.from = function (object) {
+	        return [].slice.call(object);
+	    };
+	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	if (!Array.prototype.includes) {
+	    Array.prototype.includes = function (searchElement /*, fromIndex*/) {
+	        var O = Object(this);
+	        var len = parseInt(O.length, 10) || 0;
+	        if (len === 0) {
+	            return false;
+	        }
+	        var n = parseInt(arguments[1], 10) || 0;
+	        var k;
+	        if (n >= 0) {
+	            k = n;
+	        } else {
+	            k = len + n;
+	            if (k < 0) {
+	                k = 0;
+	            }
+	        }
+	        var currentElement;
+	        while (k < len) {
+	            currentElement = O[k];
+	            if (searchElement === currentElement || searchElement !== searchElement && currentElement !== currentElement) {
+	                // NaN !== NaN
+	                return true;
+	            }
+	            k++;
+	        }
+	        return false;
+	    };
+	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	if (!Array.prototype.find) {
+	    Array.prototype.find = function (predicate) {
+	        if (this === null) {
+	            throw new TypeError('Array.prototype.find called on null or undefined');
+	        }
+	        if (typeof predicate !== 'function') {
+	            throw new TypeError('predicate must be a function');
+	        }
+	        var list = Object(this);
+	        var length = list.length >>> 0;
+	        var thisArg = arguments[1];
+	        var value;
+
+	        for (var i = 0; i < length; i++) {
+	            value = list[i];
+	            if (predicate.call(thisArg, value, i, list)) {
+	                return value;
+	            }
+	        }
+	        return undefined;
+	    };
+	}
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	(function () {
+	    if (typeof window.Element === 'undefined' || 'classList' in document.documentElement) return;
+
+	    var prototype = Array.prototype,
+	        push = prototype.push,
+	        splice = prototype.splice,
+	        join = prototype.join;
+
+	    function DOMTokenList(el) {
+	        this.el = el;
+	        // The className needs to be trimmed and split on whitespace
+	        // to retrieve a list of classes.
+	        var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
+	        for (var i = 0; i < classes.length; i++) {
+	            push.call(this, classes[i]);
+	        }
+	    };
+
+	    DOMTokenList.prototype = {
+	        add: function add(token) {
+	            if (this.contains(token)) return;
+	            push.call(this, token);
+	            this.el.className = this.toString();
+	        },
+	        contains: function contains(token) {
+	            return this.el.className.indexOf(token) !== -1;
+	        },
+	        item: function item(index) {
+	            return this[index] || null;
+	        },
+	        remove: function remove(token) {
+	            if (!this.contains(token)) return;
+	            for (var i = 0; i < this.length; i++) {
+	                if (this[i] === token) break;
+	            }
+	            splice.call(this, i, 1);
+	            this.el.className = this.toString();
+	        },
+	        toString: function toString() {
+	            return join.call(this, ' ');
+	        },
+	        toggle: function toggle(token) {
+	            if (!this.contains(token)) {
+	                this.add(token);
+	            } else {
+	                this.remove(token);
+	            }
+
+	            return this.contains(token);
+	        }
+	    };
+
+	    window.DOMTokenList = DOMTokenList;
+
+	    function defineElementGetter(obj, prop, getter) {
+	        if (Object.defineProperty) {
+	            Object.defineProperty(obj, prop, {
+	                get: getter
+	            });
+	        } else {
+	            obj.__defineGetter__(prop, getter);
+	        }
+	    }
+
+	    defineElementGetter(Element.prototype, 'classList', function () {
+	        return new DOMTokenList(this);
+	    });
+	})();
 
 /***/ }
 /******/ ])

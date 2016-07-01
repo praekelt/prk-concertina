@@ -1,4 +1,8 @@
 require('./styles/default/prk-concertina.default.scss');
+require('./polyfills/array-from');
+require('./polyfills/array-includes');
+require('./polyfills/array-find');
+require('./polyfills/classlist');
 
 export default class Concertina {
     constructor(el, customOptions) {
