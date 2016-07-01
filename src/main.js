@@ -74,11 +74,11 @@ export default class Concertina {
     // Toggle the active state.
     toggleState(el, state) {
         let className = '';
-        if (this.tabs.indexOf(el) !== -1) {
+        if (this.tabs.includes(el)) {
             el.setAttribute('aria-selected', state);
             className = this.options.tabActiveClass.replace('.', '');
         }
-        if (this.panels.indexOf(el) !== -1) {
+        if (this.panels.includes(el)) {
             el.setAttribute('aria-hidden', !state);
             className = this.options.panelActiveClass.replace('.', '');
         }
