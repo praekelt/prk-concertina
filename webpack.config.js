@@ -87,7 +87,7 @@ var config = {
         return [Autoprefixer({
             'browsers': ['> 1%', 'IE 7', 'IE 8', 'IE 9']
         })];
-    },
+    }
 }
 
 module.exports = config;

@@ -70,6 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(5);
 	__webpack_require__(6);
 	__webpack_require__(7);
+	__webpack_require__(8);
 
 	var Concertina = function () {
 	    function Concertina(el, customOptions) {
@@ -255,6 +256,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	if (!Array.prototype.find) {
+	    Array.prototype.find = function (predicate) {
+	        if (this === null) {
+	            throw new TypeError('Array.prototype.find called on null or undefined');
+	        }
+	        if (typeof predicate !== 'function') {
+	            throw new TypeError('predicate must be a function');
+	        }
+	        var list = Object(this);
+	        var length = list.length >>> 0;
+	        var thisArg = arguments[1];
+	        var value;
+
+	        for (var i = 0; i < length; i++) {
+	            value = list[i];
+	            if (predicate.call(thisArg, value, i, list)) {
+	                return value;
+	            }
+	        }
+	        return undefined;
+	    };
+	}
+
+/***/ },
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
