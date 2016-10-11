@@ -67,6 +67,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	__webpack_require__(1);
+	__webpack_require__(5);
+	__webpack_require__(6);
 
 	var Concertina = function () {
 	    function Concertina(el, customOptions) {
@@ -170,11 +172,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'toggleState',
 	        value: function toggleState(el, state) {
 	            var className = '';
-	            if (this.tabs.includes(el)) {
+	            if (this.tabs.indexOf(el) !== -1) {
 	                el.setAttribute('aria-selected', state);
 	                className = this.options.tabActiveClass.replace('.', '');
 	            }
-	            if (this.panels.includes(el)) {
+	            if (this.panels.indexOf(el) !== -1) {
 	                el.setAttribute('aria-hidden', !state);
 	                className = this.options.panelActiveClass.replace('.', '');
 	            }
@@ -193,6 +195,101 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/**
+	 * @license MIT, GPL, do whatever you want
+	 * @requires polyfill: Array.prototype.slice fix {@link https://gist.github.com/brettz9/6093105}
+	 */
+
+	if (!Array.from) {
+	    Array.from = function (object) {
+	        return [].slice.call(object);
+	    };
+	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	(function () {
+	    if (typeof window.Element === 'undefined' || 'classList' in document.documentElement) return;
+
+	    var prototype = Array.prototype,
+	        push = prototype.push,
+	        splice = prototype.splice,
+	        join = prototype.join;
+
+	    function DOMTokenList(el) {
+	        this.el = el;
+	        // The className needs to be trimmed and split on whitespace
+	        // to retrieve a list of classes.
+	        var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
+	        for (var i = 0; i < classes.length; i++) {
+	            push.call(this, classes[i]);
+	        }
+	    };
+
+	    DOMTokenList.prototype = {
+	        add: function add(token) {
+	            if (this.contains(token)) return;
+	            push.call(this, token);
+	            this.el.className = this.toString();
+	        },
+	        contains: function contains(token) {
+	            return this.el.className.indexOf(token) !== -1;
+	        },
+	        item: function item(index) {
+	            return this[index] || null;
+	        },
+	        remove: function remove(token) {
+	            if (!this.contains(token)) return;
+	            for (var i = 0; i < this.length; i++) {
+	                if (this[i] === token) break;
+	            }
+	            splice.call(this, i, 1);
+	            this.el.className = this.toString();
+	        },
+	        toString: function toString() {
+	            return join.call(this, ' ');
+	        },
+	        toggle: function toggle(token) {
+	            if (!this.contains(token)) {
+	                this.add(token);
+	            } else {
+	                this.remove(token);
+	            }
+
+	            return this.contains(token);
+	        }
+	    };
+
+	    window.DOMTokenList = DOMTokenList;
+
+	    function defineElementGetter(obj, prop, getter) {
+	        if (Object.defineProperty) {
+	            Object.defineProperty(obj, prop, {
+	                get: getter
+	            });
+	        } else {
+	            obj.__defineGetter__(prop, getter);
+	        }
+	    }
+
+	    defineElementGetter(Element.prototype, 'classList', function () {
+	        return new DOMTokenList(this);
+	    });
+	})();
 
 /***/ }
 /******/ ])

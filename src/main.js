@@ -1,4 +1,6 @@
 require('./styles/default/prk-concertina.default.scss');
+require('./array-from-polyfill');
+require('./classlist-polyfill');
 
 export default class Concertina {
     constructor(el, customOptions) {
@@ -71,11 +73,11 @@ export default class Concertina {
     // Toggle the active state.
     toggleState(el, state) {
         let className = '';
-        if (this.tabs.includes(el)) {
+        if (this.tabs.indexOf(el) !== -1) {
             el.setAttribute('aria-selected', state);
             className = this.options.tabActiveClass.replace('.', '');
         }
-        if (this.panels.includes(el)) {
+        if (this.panels.indexOf(el) !== -1) {
             el.setAttribute('aria-hidden', !state);
             className = this.options.panelActiveClass.replace('.', '');
         }
